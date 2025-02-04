@@ -3,129 +3,172 @@ Explanation of different pipeline stages (Build, Test, Deploy)
 
 
 
-1. Build Stages
-    
-a->Git Checkout
+Here's a well-formatted and decorated version of your explanation with improved readability and clarity:  
 
-Pulls the source code from the GitHub repository.
-Ensures the pipeline is always working with the latest version of the code.
+---
 
-stage('git checkout') {
-    steps {
-        git branch: 'main', url: 'https://github.com/vipul0123/SMVDU-Yoga-Club.git'
-    }
+# **CI/CD Pipeline Stages: Build, Test & Deploy**  
+
+A Continuous Integration/Continuous Deployment (CI/CD) pipeline automates the software development lifecycle, ensuring efficient code integration, testing, security scanning, and deployment. Below are the different stages of a robust pipeline:  
+
+---
+
+## **🚀 Build Stages**  
+
+### **1️⃣ Git Checkout - Fetching the Latest Code**  
+🔹 **Purpose**: Pulls the latest source code from the GitHub repository, ensuring the pipeline always works with the most recent version.  
+
+**Jenkins Pipeline Code:**  
+```groovy
+stage('Git Checkout') { 
+    steps { 
+        git branch: 'main', url: 'https://github.com/vipul0123/SMVDU-Yoga-Club.git' 
+    } 
 }
+```
 
-b->Compile
+---
 
-Uses Maven to compile the Java source code.
+### **2️⃣ Compile - Building the Application**  
+🔹 **Purpose**: Uses **Maven** to compile the Java source code into executable bytecode.  
 
-stage('compile') {
-    steps {
-        sh "mvn compile"
-    }
+**Jenkins Pipeline Code:**  
+```groovy
+stage('Compile') { 
+    steps { 
+        sh "mvn compile" 
+    } 
 }
+```
 
-2. Test & Security Analysis Stages
+---
 
-c->SonarQube Analysis (Static Code Analysis)
+## **🛡️ Test & Security Analysis Stages**  
 
-Performs static code analysis using SonarQube.
-Detects bugs, vulnerabilities, and code smells.
+### **3️⃣ SonarQube Analysis - Static Code Review**  
+🔹 **Purpose**: Scans the code for **bugs, vulnerabilities, and code smells** using SonarQube.  
 
-
-stage('sonarqube analysis') {
-    steps {
-       withSonarQubeEnv('sonar') {
-           sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=SMVDU \
-            -Dsonar.projectKey=SMVDU -Dsonar.java.binaries=. '''
-        }
-    }
+**Jenkins Pipeline Code:**  
+```groovy
+stage('SonarQube Analysis') { 
+    steps { 
+        withSonarQubeEnv('sonar') { 
+            sh ''' 
+                $SCANNER_HOME/bin/sonar-scanner 
+                -Dsonar.projectName=SMVDU 
+                -Dsonar.projectKey=SMVDU 
+                -Dsonar.java.binaries=. 
+            ''' 
+        } 
+    } 
 }
+```
 
-d->OWASP Dependency Check
+---
 
-Scans project dependencies for security vulnerabilities.
+### **4️⃣ OWASP Dependency Check - Security Scanning**  
+🔹 **Purpose**: Scans **third-party libraries** for known security vulnerabilities.  
 
-stage('OWASP dependency check') {
-    steps {
-        dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DC'
-        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-    }
+**Jenkins Pipeline Code:**  
+```groovy
+stage('OWASP Dependency Check') { 
+    steps { 
+        dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DC'
+        dependencyCheckPublisher pattern: '**/dependency-check-report.xml' 
+    } 
 }
+```
 
-e->Trivy Scan (Container Security)
+---
 
-Scans the Docker image for vulnerabilities.
+### **5️⃣ Trivy Scan - Container Security**  
+🔹 **Purpose**: Scans the **Docker image** for security vulnerabilities using Trivy.  
 
-stage('trivy scan') {
-    steps {
-        sh "trivy image vipul0123/mywebsite>trivy-report.txt"
-    }
+**Jenkins Pipeline Code:**  
+```groovy
+stage('Trivy Scan') { 
+    steps { 
+        sh "trivy image vipul0123/mywebsite > trivy-report.txt" 
+    } 
 }
+```
 
-3. Deployment Stages
+---
 
-f->Docker Build
+## **📦 Deployment Stages**  
 
-Builds a Docker image from the source code.
+### **6️⃣ Docker Build - Creating a Container Image**  
+🔹 **Purpose**: Builds a **Docker image** from the application source code.  
 
-stage('docker build') {
-    steps {
-       sh "docker build -t vipul0123/mywebsite:latest ."
-    }
+**Jenkins Pipeline Code:**  
+```groovy
+stage('Docker Build') { 
+    steps { 
+        sh "docker build -t vipul0123/mywebsite:latest ." 
+    } 
 }
+```
 
-g->Docker Push
+---
 
-Pushes the built Docker image to Docker Hub.
+### **7️⃣ Docker Push - Publishing the Image**  
+🔹 **Purpose**: Pushes the built **Docker image** to **Docker Hub**.  
 
-stage('docker push') {
-    steps {
-        sh "docker push vipul0123/mywebsite"
-    }
+**Jenkins Pipeline Code:**  
+```groovy
+stage('Docker Push') { 
+    steps { 
+        sh "docker push vipul0123/mywebsite" 
+    } 
 }
+```
 
-h->Kubernetes Deployment
+---
 
-Deploys the Docker container to a Kubernetes cluster.
-Uses kubectl to apply the Kubernetes deployment and service files.
+### **8️⃣ Kubernetes Deployment - Running in Production**  
+🔹 **Purpose**: Deploys the Docker container to a **Kubernetes cluster**. Uses `kubectl` to manage deployment and services.  
 
-stage('kubernetes deploy') {
-    steps {
-        withKubeConfig(credentialsId: 'k8-token', namespace: 'webapps', serverUrl: 'https://172.31.41.52:6443') {
-            sh 'kubectl delete deployment ekart-deployment -n webapps'
-            sh "kubectl apply -f deploymentservice.yml -n webapps"
-            sh "kubectl get svc -n webapps"
-        }
-    }
+**Jenkins Pipeline Code:**  
+```groovy
+stage('Kubernetes Deploy') { 
+    steps { 
+        withKubeConfig(credentialsId: 'k8-token', namespace: 'webapps', serverUrl: 'https://172.31.41.52:6443') { 
+            sh 'kubectl delete deployment ekart-deployment -n webapps' 
+            sh "kubectl apply -f deploymentservice.yml -n webapps" 
+            sh "kubectl get svc -n webapps" 
+        } 
+    } 
 }
+```
 
-Summary of Pipeline Stages
-Stage	Purpose
-Git Checkout	Pulls source code from GitHub.
-Compile	Compiles the Java project using Maven.
-SonarQube Analysis	Performs static code analysis for bugs & vulnerabilities.
-OWASP Dependency Check	Scans dependencies for security vulnerabilities.
-Docker Build	Builds the application as a Docker image.
-Trivy Scan	Scans Docker images for security vulnerabilities.
-Docker Push	Pushes the Docker image to Docker Hub.
-Kubernetes Deploy	Deploys the application to a Kubernetes cluster.
+---
 
+## **🔑 Managing Environment Variables & Secrets in Jenkins**  
 
+🔹 **Why?** Environment variables store **credentials, API keys, and other configurations** securely.  
 
-How environment variables/secrets are managed
-
-1. Environment Variables in Jenkins Pipeline
-2. 
-Defined in the environment block of the pipeline.
-
-Example in your pipeline:
-
-environment{
-    SCANNER_HOME=tool 'sonar-scanner'
+**Example - Setting Environment Variables in Jenkins:**  
+```groovy
+environment { 
+    SCANNER_HOME = tool 'sonar-scanner' 
 }
+```
+✅ **SCANNER_HOME** is assigned using Jenkins tools to ensure the correct **Sonar Scanner** binary is used.
 
-SCANNER_HOME is set using Jenkins tools.
+---
 
-This ensures the correct Sonar Scanner binary is used.
+## **📌 Summary of CI/CD Pipeline Stages**  
+
+| **Stage**                      | **Purpose**                                      |
+|--------------------------------|------------------------------------------------|
+| **Git Checkout**               | Fetches the latest source code from GitHub.     |
+| **Compile**                    | Compiles Java code using Maven.                 |
+| **SonarQube Analysis**         | Performs static code analysis for security.    |
+| **OWASP Dependency Check**     | Scans dependencies for vulnerabilities.       |
+| **Trivy Scan**                 | Scans Docker images for security risks.       |
+| **Docker Build**               | Builds the application into a Docker image.   |
+| **Docker Push**                | Pushes the Docker image to Docker Hub.        |
+| **Kubernetes Deployment**      | Deploys the application to a Kubernetes cluster. |
+
+---
+
