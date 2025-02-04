@@ -43,3 +43,42 @@ Enable Continuous Deployment: Connect your app to a CI/CD pipeline using GitHub 
 Conclusion
 
 Deploying a Node/Express application on Azure App Service is an efficient way to leverage cloud infrastructure while focusing on your application's code. Azure provides robust tools and integrations to help you scale and manage your app seamlessly. With the steps outlined above, you can get your application running in the cloud with minimal hassle.
+
+
+
+Azure configurations used (Resource Groups, Networking, etc.)
+
+
+
+Azure Configurations for Web App Deployment on Azure App Service
+Below are the essential Azure configurations used to deploy a simple Node.js web application on Azure App Service:
+
+1. Resource Group
+Resource Group Name: my-webapp
+A logical container for all the Azure resources (App Service, Database, Storage, etc.).
+2. App Service Plan & App Service
+App Service Plan: Defines the computing resources (pricing tier, region).
+Example Configuration:
+Name: my-app-service-plan
+Region: East US
+SKU: B1 (Basic Tier) (can be scaled as needed)
+App Service: Hosts the web application.
+Example Configuration:
+Name: my-webapp
+Runtime: Node.js 18 / Python 3.9
+Public URL: https://my-webapp.azurewebsites.net/
+3. Networking (Public Access & Security)
+Virtual Network (VNet): Not required for basic setup (used for private networking).
+Access Restrictions: Can restrict access to specific IPs if needed.
+Custom Domain & SSL (Optional):
+Configure a custom domain via Azure Front Door or Azure CDN.
+Enable HTTPS (SSL/TLS) for secure communication.
+4. Storage & Database (Optional)
+Azure Storage (for static files, logs, etc.):
+Name: mywebappstorage
+Type: StorageV2 (general-purpose v2)
+Replication: LRS (Locally Redundant Storage)
+Azure SQL Database / CosmosDB (if needed for application data):
+Name: my-webapp-db
+Pricing Tier: Basic / Serverless
+Connectivity: Public endpoint (secure with firewall rules)
