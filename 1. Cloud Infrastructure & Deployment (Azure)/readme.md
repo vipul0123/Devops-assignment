@@ -82,3 +82,14 @@ Azure SQL Database / CosmosDB (if needed for application data):
 Name: my-webapp-db
 Pricing Tier: Basic / Serverless
 Connectivity: Public endpoint (secure with firewall rules)
+
+
+
+
+Screenshots of a successful deployment
+
+![Screenshot 2025-02-04 152717](https://github.com/user-attachments/assets/95211e10-0420-401b-b3ec-b36ecfeca349)
+![Screenshot 2025-02-04 152550](https://github.com/user-attachments/assets/5674b72f-cc1b-41f8-ba3c-c639cc708b72)
+![Screenshot 2025-02-04 152536](https://github.com/user-attachments/assets/1f4bdd0d-f474-466b-8ef6-e20614a9aab1)
+![Screenshot 2025-02-04 151859](https://github.com/user-attachments/assets/ae33013f-c4b0-4aea-a378-b7a49145657c)
+
