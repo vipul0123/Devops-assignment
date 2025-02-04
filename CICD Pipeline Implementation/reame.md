@@ -3,7 +3,7 @@ Explanation of different pipeline stages (Build, Test, Deploy)
 
 
 1. Build Stages
-   
+    
 a->Git Checkout
 
 Pulls the source code from the GitHub repository.
