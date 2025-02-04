@@ -1,4 +1,4 @@
-Explanation of different pipeline stages (Build, Test, Deploy)
+Explanation of different pipeline stages (Build, Test, Deploy) 
 
 
 
