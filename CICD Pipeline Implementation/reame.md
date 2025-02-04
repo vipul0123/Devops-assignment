@@ -112,3 +112,20 @@ Trivy Scan	Scans Docker images for security vulnerabilities.
 Docker Push	Pushes the Docker image to Docker Hub.
 Kubernetes Deploy	Deploys the application to a Kubernetes cluster.
 
+
+
+How environment variables/secrets are managed
+
+1. Environment Variables in Jenkins Pipeline
+2. 
+Defined in the environment block of the pipeline.
+
+Example in your pipeline:
+
+environment{
+    SCANNER_HOME=tool 'sonar-scanner'
+}
+
+SCANNER_HOME is set using Jenkins tools.
+
+This ensures the correct Sonar Scanner binary is used.
