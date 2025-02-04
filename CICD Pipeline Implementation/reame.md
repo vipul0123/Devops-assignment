@@ -1,3 +1,4 @@
+![Screenshot 2024-02-17 120729](https://github.com/user-attachments/assets/1827f3aa-9418-4dd1-91fd-cd5e34849bae)
 Explanation of different pipeline stages (Build, Test, Deploy) 
 
 
